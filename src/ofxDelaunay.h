@@ -37,17 +37,18 @@ public:
 	ofPoint getPointNear(ofPoint pos, float minDist, int & index); //returns actual point AND index to point
 	ITRIANGLE getTriangleForPos(ofPoint pos); //returns ITRIANGLE(0,0,0) if none found!
 	void removePointAtIndex(int index); //invalidates triangles and mesh
-	void setPointAtIndex(ofPoint p, int index); //invalidates mesh
+	void setPointAtIndex(ofPoint p, int index,bool triangulate=true); //invalidates mesh
 	vector<ofPoint> getPointsForITriangle(ITRIANGLE t);
 	int getNumTriangles();
 	int getNumPoints();
 	ITRIANGLE getTriangleAtIndex(int index);
+  vector<int> indices;
 
-	int  triangulate();
+	int  triangulate(vector<int> *indices = nullptr );
 	void draw();
 	
     ofMesh triangleMesh; //output of triangulate();
-
+  
 
 private:
 

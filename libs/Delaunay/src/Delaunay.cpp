@@ -19,15 +19,15 @@ using namespace std;
 //   Note : A point on the edge is inside the circumcircle
 ////////////////////////////////////////////////////////////////////////
 
-int CircumCircle(double xp, double yp, double x1, double y1, double x2, 
+bool CircumCircle(double xp, double yp, double x1, double y1, double x2,
 double y2, double x3, double y3, double &xc, double &yc, double &r){
   double m1, m2, mx1, mx2, my1, my2;
   double dx, dy, rsqr, drsqr;
 
     // Check for coincident points
-    if(abs(y1 - y2) < EPSILON && abs(y2 - y3) < EPSILON)
-        return(false);
-    
+//    if(abs(y1 - y2) < EPSILON && abs(y2 - y3) < EPSILON)
+//        return(false);
+
     if(abs(y2-y1) < EPSILON){
         m2 = - (x3 - x2) / (y3 - y2);
         mx2 = (x2 + x3) / 2.0;
@@ -59,7 +59,7 @@ double y2, double x3, double y3, double &xc, double &yc, double &r){
     dy = yp - yc;
     drsqr = dx * dx + dy * dy;
     
-    return((drsqr <= rsqr) ? true : false);
+    return (drsqr <= rsqr) ;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -84,7 +84,7 @@ int Triangulate(int nv, XYZ pxyz[], ITRIANGLE v[], int &ntri)
     int trimax, emax = 200;
     int status = 0;
     
-    int inside;
+    bool inside;
     int i, j, k;
     double xp, yp, x1, y1, x2, y2, x3, y3, xc, yc, r;
     double xmin, xmax, ymin, ymax, xmid, ymid;
@@ -92,6 +92,7 @@ int Triangulate(int nv, XYZ pxyz[], ITRIANGLE v[], int &ntri)
     
     // Allocate memory for the completeness list, flag for each triangle
     trimax = 4 * nv;
+
     complete = new int[trimax];
     // Allocate memory for the edge list
     edges = new IEDGE[emax];
@@ -155,13 +156,14 @@ int Triangulate(int nv, XYZ pxyz[], ITRIANGLE v[], int &ntri)
             x3 = pxyz[v[j].p3].x;
             y3 = pxyz[v[j].p3].y;
             inside = CircumCircle(xp, yp, x1, y1, x2, y2, x3, y3, xc, yc, r);
-            //    if (xc + r < xp)
-            
+//          if (xc + r < xp){
+
             // Suggested
-            // if (xc + r + EPSILON < xp)
-            if (xc < xp && ((xp-xc)*(xp-xc)) > r)
+//          if (xc + r + EPSILON < xp){
+            if (xc < xp && ((xp-xc)*(xp-xc)) > r){
                 complete[j] = true;
-            
+          }
+
             if(inside){
                 // Check that we haven't exceeded the edge list size
                 if(nedge + 3 >= emax){
@@ -200,12 +202,12 @@ int Triangulate(int nv, XYZ pxyz[], ITRIANGLE v[], int &ntri)
                     edges[k].p2 = -1;
                 }
                 // Shouldn't need the following, see note above */
-                if((edges[j].p1 == edges[k].p1) && (edges[j].p2 == edges[k].p2)){
-                    edges[j].p1 = -1;
-                    edges[j].p2 = -1;
-                    edges[k].p1 = -1;
-                    edges[k].p2 = -1;
-                }
+//                if((edges[j].p1 == edges[k].p1) && (edges[j].p2 == edges[k].p2)){
+//                    edges[j].p1 = -1;
+//                    edges[j].p2 = -1;
+//                    edges[k].p1 = -1;
+//                    edges[k].p2 = -1;
+//                }
             }
         }
 

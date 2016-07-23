@@ -1,4 +1,4 @@
-#include "testApp.h"
+#include "ofApp.h"
 
 //--------------------------------------------------------------
 void testApp::setup(){
@@ -49,7 +49,7 @@ void testApp::mousePressed(int x, int y, int button){
 //--------------------------------------------------------------
 void testApp::mouseReleased(int x, int y, int button){
 
-    triangulation.addPoint(ofPoint(x,y));
+    triangulation.addPoint(ofVec3f(x,y));
     triangulation.triangulate();
 }
 
